@@ -116,7 +116,7 @@ class horoshopClass {
 
         return await axios(options)
             .then(response => {
-                //console.log(response.data);
+                console.log(response.data);
                 return response.data
             })
             .catch(error => {
@@ -124,6 +124,26 @@ class horoshopClass {
             });
     }
 
+    async allItems(){
+        let result = []
+        let all = {}
+        let start = 0
+        console.log(`Geting the items`)
+        const notfind = []
+        while (true) {
+            const update = []
+            const tmp= await this.getItems(start)
+            //console.log(tmp[0])
+            result = [...result, ... tmp]
+            if (tmp.length != 500) break;
+            start += 500
+            console.log(`Currently get ${start}`)
+            //if (start==1500) break
+
+        }
+        result.map(i=>(all[i.article]={sku:i.article, presence:i.presence.id == 2 ? 0 : 1, price:i.price, brand:i.brand?.value?.ua}))
+        return all
+    }
 
 }
 

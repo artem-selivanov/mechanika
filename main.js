@@ -1,16 +1,41 @@
-// Import the axios module
 const axios = require('axios');
+const {horo_auth, erc_auth} = require('./settings');
+const horoshopClass = require('./helpers/horoshop');
+const ercClass = require('./helpers/erc');
+const h = new horoshopClass(horo_auth);
+const e = new ercClass(erc_auth);
 
-// Define the URL for the GET request
-const url = 'https://jsonplaceholder.typicode.com/posts/1';
+(async function () {
+    await h.init()
+    const horo_items = await h.allItems()
+    console.log(`We have a ${[...Object.values(horo_items)].length} items in Horoshop`)
+    await e.init()
+    const erc = await e.getItems()
+    const update = []
+    for (let item of [...Object.values(erc)]) {
+        const hitem = horo_items[item.sku]
+        if (!hitem) continue
+        if (((hitem.presence == 0 && item.amount == 0) || (hitem.presence == 1 && item.amount > 0)) && hitem.price == item.price) continue
+        update.push({
+            article: item.sku,
+            price: item.price,
+            presence: item.amount > 0 ? "В наявності" : "Немає в наявності"
+        })
+    }
+    console.log(update.length)
+    /*
+    for (let item of [...Object.values(horo_items)]) {
+        if (item.presence == 0) continue
+        if (erc[item.sku]) continue
+        update.push({
+            article: item.sku,
+            price: item.price,
+            presence: "Немає в наявності"
+        })
+    }
 
-// Use axios to make the GET request
-axios.get(url)
-    .then(response => {
-        // Handle the successful response
-        console.log('Data:', response.data);
-    })
-    .catch(error => {
-        // Handle any errors
-        console.error('Error:', error);
-    });
+    console.log(update.length)*/
+    await h.init()
+    await h.sendUpdate("/api/catalog/import/",update)
+
+})()
