@@ -6,12 +6,13 @@ const h = new horoshopClass(horo_auth);
 const e = new ercClass(erc_auth);
 
 (async function () {
+    const update = []
     await h.init()
     const horo_items = await h.allItems()
     console.log(`We have a ${[...Object.values(horo_items)].length} items in Horoshop`)
-    await e.init()
+    /*await e.init()
     const erc = await e.getItems()
-    const update = []
+
     for (let item of [...Object.values(erc)]) {
         const hitem = horo_items[item.sku]
         if (!hitem) continue
@@ -22,7 +23,15 @@ const e = new ercClass(erc_auth);
             presence: item.amount > 0 ? "В наявності" : "Немає в наявності"
         })
     }
-    console.log(update.length)
+    console.log(update.length)*/
+
+    update.push({
+        article: "31C615",
+        price: 499,//item.price,
+        presence: "В наявності"
+    })
+    console.log(update)
+
     /*
     for (let item of [...Object.values(horo_items)]) {
         if (item.presence == 0) continue
@@ -34,8 +43,8 @@ const e = new ercClass(erc_auth);
         })
     }
 
-    console.log(update.length)*/
-    await h.init()
+    console.log(update.length)
+    await h.init()*/
     await h.sendUpdate("/api/catalog/import/",update)
 
 })()
