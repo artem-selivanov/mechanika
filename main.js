@@ -19,7 +19,7 @@ const e = new ercClass(erc_auth);
         update.push({
             article: item.sku,
             price: item.price,
-            presence: item.amount > 0 ? "В наявності" : "Немає в наявності"
+            presence: item.amount > 0 ? "Р’ РЅР°СЏРІРЅРѕСЃС‚С–" : "РќРµРјР°С” РІ РЅР°СЏРІРЅРѕСЃС‚С–"
         })
     }
     console.log(update.length)
@@ -30,7 +30,7 @@ const e = new ercClass(erc_auth);
         update.push({
             article: item.sku,
             price: item.price,
-            presence: "Немає в наявності"
+            presence: "РќРµРјР°С” РІ РЅР°СЏРІРЅРѕСЃС‚С–"
         })
     }
 
