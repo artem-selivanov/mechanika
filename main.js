@@ -6,6 +6,7 @@ const h = new horoshopClass(horo_auth);
 const e = new ercClass(erc_auth);
 
 (async function () {
+    console.log(horo_auth)
     const update = []
     await h.init()
     const horo_items = await h.allItems()
