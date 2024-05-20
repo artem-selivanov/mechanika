@@ -40,7 +40,7 @@ class horoshopClass {
         //
         const data = {
             "offset": start,
-            includedParams: ["quantity", "price", "name", "presence","brand", "name"],
+            includedParams: ["quantity", "price", "name", "presence", "brand", "name"],
             "token": this.token
         };
 
@@ -99,7 +99,7 @@ class horoshopClass {
             });
     }
 
-    async sendUpdate(url,products) {
+    async sendUpdate(url, products) {
         const data = {
             products,
             "token": this.token
@@ -124,7 +124,7 @@ class horoshopClass {
             });
     }
 
-    async allItems(){
+    async allItems() {
         let result = []
         let all = {}
         let start = 0
@@ -132,16 +132,22 @@ class horoshopClass {
         const notfind = []
         while (true) {
             const update = []
-            const tmp= await this.getItems(start)
+            const tmp = await this.getItems(start)
             //console.log(tmp[0])
-            result = [...result, ... tmp]
+            result = [...result, ...tmp]
             if (tmp.length != 500) break;
             start += 500
             console.log(`Currently get ${start}`)
             //if (start==1500) break
 
         }
-        result.map(i=>(all[i.article]={sku:i.article, presence:i.presence.id == 2 ? 0 : 1, price:i.price, brand:i.brand?.value?.ua}))
+        //console.log(result)
+        result.map(i => (all[i.article] = {
+            sku: i.article,
+            presence: i.presence.id == 2 ? 0 : i.presence.id == 1 ? 1 : 3,
+            price: i.price,
+            brand: i.brand?.value?.ua
+        }))
         return all
     }
 

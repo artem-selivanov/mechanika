@@ -51,7 +51,7 @@ class ercClass {
             "accept": "application/json",
             "X-AUTH-TOKEN": this.token
         };
-
+        // .0 2890.0 2494.0 952.0
         const results = await axios.get(`https://api.erc.ua/v1/ware/uk?page=${page}&limit=${limit}`, {headers}) //&filters%5Bvendor%5D=${id}
         return results.data.content.map(i => i.sku.map(v => ({
             amount: i.amount == null ? 0 : parseInt(i.amount.replace(">", "")),
