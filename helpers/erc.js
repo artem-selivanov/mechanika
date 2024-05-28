@@ -46,7 +46,7 @@ class ercClass {
     }
 
 
-    async getByVendor( page, limit) {
+    async getByVendor(page, limit) {
         const headers = {
             "accept": "application/json",
             "X-AUTH-TOKEN": this.token
@@ -63,19 +63,28 @@ class ercClass {
     async getItems() {
         let results = []
         let items = {}
-            let page = 1
-            const limit = 1000
-            while (true) {
-                const tmp = await this.getByVendor(page, limit) //vendor.id
+        let page = 1
+        const limit = 1000
+        while (true) {
+            let tmp
+            let check = true
+            try {
+                tmp = await this.getByVendor(page, limit) //vendor.id
+            } catch (e) {
+                console.log(e.response.data)
+                check = false
+            }
+            if (check) {
                 results = [...results, ...tmp]
                 if (tmp.length < limit) break
-                page++
                 console.log(tmp.length)
-                console.log(`Page: ${page}`)
-                //break
             }
+            page++
+            console.log(`Page: ${page}`)
+            //break
+        }
         console.log(`All items: ${results.length}`)
-        results.map(i=>(items[i.sku]=i))
+        results.map(i => (items[i.sku] = i))
         return items
     }
 
