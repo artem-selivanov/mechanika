@@ -64,7 +64,7 @@ class ercClass {
         let results = []
         let items = {}
         let page = 1
-        const limit = 1000
+        const limit = 500
         while (true) {
             let tmp
             let check = true
